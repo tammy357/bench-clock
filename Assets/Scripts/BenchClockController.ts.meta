@@ -28,15 +28,25 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    alertSound: false
     nextUpCountdown: false
     nextUpLabel: false
+    runABackplate: false
     runACountdown: false
+    runAPanel: false
+    runAProgressFill: false
     runAStepName: false
     runATitle: false
+    runBBackplate: false
     runBCountdown: false
+    runBPanel: false
+    runBProgressFill: false
     runBStepName: false
     runBTitle: false
+    runCBackplate: false
     runCCountdown: false
+    runCPanel: false
+    runCProgressFill: false
     runCStepName: false
     runCTitle: false
   ScriptTypesHidden:
@@ -48,7 +58,10 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - runATitle: !<reference.Text> 00000000-0000-0000-0000-000000000000
+    - runAPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      runBPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      runCPanel: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      runATitle: !<reference.Text> 00000000-0000-0000-0000-000000000000
       runAStepName: !<reference.Text> 00000000-0000-0000-0000-000000000000
       runACountdown: !<reference.Text> 00000000-0000-0000-0000-000000000000
       runBTitle: !<reference.Text> 00000000-0000-0000-0000-000000000000
@@ -59,10 +72,20 @@
       runCCountdown: !<reference.Text> 00000000-0000-0000-0000-000000000000
       nextUpLabel: !<reference.Text> 00000000-0000-0000-0000-000000000000
       nextUpCountdown: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      runABackplate: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      runBBackplate: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      runCBackplate: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      runAProgressFill: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      runBProgressFill: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      runCProgressFill: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      alertSound: !<reference.AudioTrackAsset> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
+    - '// @input SceneObject runAPanel {"hint":"RunPanel_A — receives the Interactable for pinch-to-advance"}'
+    - '// @input SceneObject runBPanel {"hint":"RunPanel_B — receives the Interactable for pinch-to-advance"}'
+    - '// @input SceneObject runCPanel {"hint":"RunPanel_C — receives the Interactable for pinch-to-advance"}'
     - '// @input Component.Text runATitle {"hint":"RunPanel_A / Title"}'
     - '// @input Component.Text runAStepName {"hint":"RunPanel_A / StepName"}'
     - '// @input Component.Text runACountdown {"hint":"RunPanel_A / Countdown"}'
@@ -74,3 +97,10 @@
     - '// @input Component.Text runCCountdown {"hint":"RunPanel_C / Countdown"}'
     - '// @input Component.Text nextUpLabel {"hint":"NextUpPanel / Label"}'
     - '// @input Component.Text nextUpCountdown {"hint":"NextUpPanel / Countdown"}'
+    - '// @input Asset.Material runABackplate {"hint":"Material on RunPanel_A / Background"}'
+    - '// @input Asset.Material runBBackplate {"hint":"Material on RunPanel_B / Background"}'
+    - '// @input Asset.Material runCBackplate {"hint":"Material on RunPanel_C / Background"}'
+    - '// @input SceneObject runAProgressFill {"hint":"RunPanel_A / ProgressFill"}'
+    - '// @input SceneObject runBProgressFill {"hint":"RunPanel_B / ProgressFill"}'
+    - '// @input SceneObject runCProgressFill {"hint":"RunPanel_C / ProgressFill"}'
+    - '// @input Asset.AudioTrackAsset alertSound {"hint":"Optional. Played once when a WAIT timer expires; the pulse runs with or without it."}'
