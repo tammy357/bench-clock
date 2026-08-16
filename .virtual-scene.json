@@ -4730,7 +4730,134 @@
         ]
       },
       "layers": 1,
-      "components": []
+      "components": [
+        {
+          "id": "d32af5f6-ce99-4b29-bea2-55369bef949b",
+          "type": "ScriptComponent",
+          "name": "BenchClockController",
+          "enabled": true,
+          "properties": {
+            "runCStepName": {
+              "isScriptInput": true,
+              "value": {
+                "UUID": "7f157fa5-f9fb-4b93-b87e-9140c5e63d98",
+                "name": "Text"
+              },
+              "type": "Component.Text",
+              "uiInfo": "{\"hint\":\"RunPanel_C / StepName\"}"
+            },
+            "runBTitle": {
+              "isScriptInput": true,
+              "value": {
+                "UUID": "47d4f88f-d31d-42dc-bb98-1797127f8af1",
+                "name": "Text"
+              },
+              "type": "Component.Text",
+              "uiInfo": "{\"hint\":\"RunPanel_B / Title\"}"
+            },
+            "runCCountdown": {
+              "isScriptInput": true,
+              "value": {
+                "UUID": "a245fba8-79ce-4c49-bdb8-994434c24e4f",
+                "name": "Text"
+              },
+              "type": "Component.Text",
+              "uiInfo": "{\"hint\":\"RunPanel_C / Countdown\"}"
+            },
+            "runBStepName": {
+              "isScriptInput": true,
+              "value": {
+                "UUID": "9d9fc7f3-9a67-4dd8-b320-ce364dc27ad7",
+                "name": "Text"
+              },
+              "type": "Component.Text",
+              "uiInfo": "{\"hint\":\"RunPanel_B / StepName\"}"
+            },
+            "runBCountdown": {
+              "isScriptInput": true,
+              "value": {
+                "UUID": "5d27fd2d-ba28-4446-b6d4-93706c153278",
+                "name": "Text"
+              },
+              "type": "Component.Text",
+              "uiInfo": "{\"hint\":\"RunPanel_B / Countdown\"}"
+            },
+            "runCTitle": {
+              "isScriptInput": true,
+              "value": {
+                "UUID": "fd9b7a6f-7946-4be7-86c7-a0156fc8cc7a",
+                "name": "Text"
+              },
+              "type": "Component.Text",
+              "uiInfo": "{\"hint\":\"RunPanel_C / Title\"}"
+            },
+            "runATitle": {
+              "isScriptInput": true,
+              "value": {
+                "UUID": "e86fe175-544b-410a-a454-3f47469b8e18",
+                "name": "Text"
+              },
+              "type": "Component.Text",
+              "uiInfo": "{\"hint\":\"RunPanel_A / Title\"}"
+            },
+            "runAStepName": {
+              "isScriptInput": true,
+              "value": {
+                "UUID": "b7b78658-6f14-41f3-8ff1-41b4b9b15c88",
+                "name": "Text"
+              },
+              "type": "Component.Text",
+              "uiInfo": "{\"hint\":\"RunPanel_A / StepName\"}"
+            },
+            "runACountdown": {
+              "isScriptInput": true,
+              "value": {
+                "UUID": "45787207-3cd6-4b2c-9438-9cc2b6b39603",
+                "name": "Text"
+              },
+              "type": "Component.Text",
+              "uiInfo": "{\"hint\":\"RunPanel_A / Countdown\"}"
+            },
+            "nextUpLabel": {
+              "isScriptInput": true,
+              "value": {
+                "UUID": "714e4171-88b0-49ac-94c4-41d0ed94063d",
+                "name": "Text"
+              },
+              "type": "Component.Text",
+              "uiInfo": "{\"hint\":\"NextUpPanel / Label\"}"
+            },
+            "nextUpCountdown": {
+              "isScriptInput": true,
+              "value": {
+                "UUID": "aefc325f-37fc-470e-a9b5-77931c951136",
+                "name": "Text"
+              },
+              "type": "Component.Text",
+              "uiInfo": "{\"hint\":\"NextUpPanel / Countdown\"}"
+            },
+            "scriptAsset": "@asset:Scripts/BenchClockController.ts",
+            "inputNames.0": "nextUpCountdown",
+            "inputNames.1": "nextUpLabel",
+            "inputNames.2": "runACountdown",
+            "inputNames.3": "runAStepName",
+            "inputNames.4": "runATitle",
+            "inputNames.5": "runBCountdown",
+            "inputNames.6": "runBStepName",
+            "inputNames.7": "runBTitle",
+            "inputNames.8": "runCCountdown",
+            "inputNames.9": "runCStepName",
+            "inputNames.10": "runCTitle",
+            "name": "BenchClockController",
+            "enabled": true,
+            "sceneObject": "@sceneObject:BenchClock",
+            "isPrefabInstanceRoot": false,
+            "hasPrefabChanges": false,
+            "id": "d32af5f6-ce99-4b29-bea2-55369bef949b",
+            "type": "ScriptComponent"
+          }
+        }
+      ]
     },
     {
       "id": "7bd79c37-490d-49ac-bcc1-177cd9719288",

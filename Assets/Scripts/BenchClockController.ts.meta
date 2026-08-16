@@ -1,0 +1,76 @@
+- !<AssetImportMetadata/bff8d87b-3ac1-4841-8cc8-cc25790f9fba>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 6ef0aadd-b5ab-41e9-a9c2-28ec371e333c
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 6ef0aadd-b5ab-41e9-a9c2-28ec371e333c
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> a934151b-02c4-40b7-8ee8-a84b90a3798e
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/a934151b-02c4-40b7-8ee8-a84b90a3798e>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 523e4d4e-6de9-4cbe-9946-d8cd37a99fd6
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    nextUpCountdown: false
+    nextUpLabel: false
+    runACountdown: false
+    runAStepName: false
+    runATitle: false
+    runBCountdown: false
+    runBStepName: false
+    runBTitle: false
+    runCCountdown: false
+    runCStepName: false
+    runCTitle: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - runATitle: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      runAStepName: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      runACountdown: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      runBTitle: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      runBStepName: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      runBCountdown: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      runCTitle: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      runCStepName: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      runCCountdown: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      nextUpLabel: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      nextUpCountdown: !<reference.Text> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input Component.Text runATitle {"hint":"RunPanel_A / Title"}'
+    - '// @input Component.Text runAStepName {"hint":"RunPanel_A / StepName"}'
+    - '// @input Component.Text runACountdown {"hint":"RunPanel_A / Countdown"}'
+    - '// @input Component.Text runBTitle {"hint":"RunPanel_B / Title"}'
+    - '// @input Component.Text runBStepName {"hint":"RunPanel_B / StepName"}'
+    - '// @input Component.Text runBCountdown {"hint":"RunPanel_B / Countdown"}'
+    - '// @input Component.Text runCTitle {"hint":"RunPanel_C / Title"}'
+    - '// @input Component.Text runCStepName {"hint":"RunPanel_C / StepName"}'
+    - '// @input Component.Text runCCountdown {"hint":"RunPanel_C / Countdown"}'
+    - '// @input Component.Text nextUpLabel {"hint":"NextUpPanel / Label"}'
+    - '// @input Component.Text nextUpCountdown {"hint":"NextUpPanel / Countdown"}'

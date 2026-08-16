@@ -1230,7 +1230,7 @@
     - !<own> 1a2d3642-e4d6-40f9-89c6-5792942b5157
     - !<own> 37703fd9-0716-4557-8c44-fca9bf160101
   Components:
-    []
+    - !<own> d32af5f6-ce99-4b29-bea2-55369bef949b
 - !<SceneObject/58ef319f-850e-40dd-8295-e6dc36ab4854>
   PrefabRemaps:
     []
@@ -3180,6 +3180,32 @@
     - !<own> bb9036be-541f-49e7-9554-c297d354da21
   Components:
     []
+- !<ScriptComponent/d32af5f6-ce99-4b29-bea2-55369bef949b>
+  PrefabRemaps:
+    []
+  Name: BenchClockController
+  Enabled: true
+  ScriptAsset: !<reference> 6ef0aadd-b5ab-41e9-a9c2-28ec371e333c
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      runATitle: !<reference.Text> e86fe175-544b-410a-a454-3f47469b8e18
+      runAStepName: !<reference.Text> b7b78658-6f14-41f3-8ff1-41b4b9b15c88
+      runACountdown: !<reference.Text> 45787207-3cd6-4b2c-9438-9cc2b6b39603
+      runBTitle: !<reference.Text> 47d4f88f-d31d-42dc-bb98-1797127f8af1
+      runBStepName: !<reference.Text> 9d9fc7f3-9a67-4dd8-b320-ce364dc27ad7
+      runBCountdown: !<reference.Text> 5d27fd2d-ba28-4446-b6d4-93706c153278
+      runCTitle: !<reference.Text> fd9b7a6f-7946-4be7-86c7-a0156fc8cc7a
+      runCStepName: !<reference.Text> 7f157fa5-f9fb-4b93-b87e-9140c5e63d98
+      runCCountdown: !<reference.Text> a245fba8-79ce-4c49-bdb8-994434c24e4f
+      nextUpLabel: !<reference.Text> 714e4171-88b0-49ac-94c4-41d0ed94063d
+      nextUpCountdown: !<reference.Text> aefc325f-37fc-470e-a9b5-77931c951136
+  ScriptTypes:
+    "":
+      {}
 - !<ScriptComponent/d3e2fbc5-8795-4913-9af6-c8626f8e6d9c>
   PrefabRemaps:
     []

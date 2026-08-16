@@ -17,6 +17,12 @@ Workspaces/**
 *.lock
 
 # Shipped by Lens Studio
+.DS_Store
+.cursor/mcp.json
+ls-extensions/
+Cache/
+*.lsproj.backup
+
 # BEGIN Lens Studio managed Agents-Docs block
 .mcp.json
 .cursor/mcp.json
