@@ -7,7 +7,13 @@ const PANEL_DEPTH_CM = 4
 
 /** Matches the ProgressTrack quad the fill slides across. */
 const BAR_WIDTH_CM = 11
-const BAR_HEIGHT_CM = 0.45
+const BAR_HEIGHT_CM = 2
+/** Slightly shorter than the track so the trough reads around the accent fill. */
+const FILL_HEIGHT_CM = BAR_HEIGHT_CM * 0.62
+
+/** Additive fade + scale-in. RGB is scaled toward black (adds no light), not alpha. */
+const ENTRANCE_DURATION = 0.3
+const ENTRANCE_SCALE_FROM = 0.9
 
 /** Cycles per second of the expiry pulse. */
 const PULSE_HZ = 1
@@ -223,8 +229,14 @@ export class BenchClockController extends BaseScriptComponent {
 
   private runs: RunState[] = []
   private countdownColor: vec4
+  private stepNameColor: vec4
+  private nextUpColor: vec4
   private neutralColor: vec4
   private activeColor: vec4
+  private entranceSeconds = 0
+  private entranceDone = false
+  private entrancePanels: SceneObject[] = []
+  private staticFade: { material: Material; rest: vec4 }[] = []
 
   onAwake(): void {
     if (!this.hasAllInputs()) {
@@ -234,6 +246,8 @@ export class BenchClockController extends BaseScriptComponent {
     }
 
     this.countdownColor = new vec4(1, 1, 1, 1)
+    this.stepNameColor = new vec4(1, 1, 1, 1)
+    this.nextUpColor = new vec4(1, 1, 1, 1)
     this.neutralColor = neutralPlate()
     this.activeColor = activePlate()
 
@@ -279,6 +293,10 @@ export class BenchClockController extends BaseScriptComponent {
 
     // SIK components must be created in onAwake, but their events bound in OnStartEvent.
     const interactables = this.runs.map((run) => this.ensureInteractable(run.panel))
+
+    this.prepareEntrance()
+    this.applyEntranceVisuals(0)
+    this.blackoutDrivenVisuals()
 
     this.createEvent('OnStartEvent').bind(() => {
       this.runs.forEach((run, index) => {
@@ -367,6 +385,7 @@ export class BenchClockController extends BaseScriptComponent {
     }
 
     const deltaTime = getDeltaTime()
+    this.tickEntrance(deltaTime)
     this.runs.forEach((run) => {
       this.tickRun(run, deltaTime)
       this.renderRun(run)
@@ -406,27 +425,30 @@ export class BenchClockController extends BaseScriptComponent {
     // Rewritten every frame rather than once at start, so a live property sync
     // from the editor cannot leave the placeholder text showing.
     run.view.title.text = run.protocol.name
+    run.view.title.textFill.color = this.fadeColor(run.theme.accent)
 
     if (step === null) {
       run.view.stepName.text = 'COMPLETE'
+      run.view.stepName.textFill.color = this.fadeColor(this.stepNameColor)
       run.view.countdown.text = '--:--'
-      run.view.countdown.textFill.color = this.countdownColor
+      run.view.countdown.textFill.color = this.fadeColor(this.countdownColor)
       run.progressFill.enabled = false
       return
     }
 
     run.view.stepName.text = step.name
+    run.view.stepName.textFill.color = this.fadeColor(this.stepNameColor)
 
     // Hands-on steps have no timer to show, so the panel calls for attention instead.
     if (step.type === 'ACTIVE') {
       run.view.countdown.text = ACTIVE_LABEL
-      run.view.countdown.textFill.color = run.theme.accent
+      run.view.countdown.textFill.color = this.fadeColor(run.theme.accent)
       run.progressFill.enabled = false
       return
     }
 
     run.view.countdown.text = this.formatMinutesSeconds(run.remainingSeconds)
-    run.view.countdown.textFill.color = this.countdownColor
+    run.view.countdown.textFill.color = this.fadeColor(this.countdownColor)
     this.renderProgress(run, step)
   }
 
@@ -444,8 +466,12 @@ export class BenchClockController extends BaseScriptComponent {
     const width = BAR_WIDTH_CM * fraction
     const transform = run.progressFill.getTransform()
     const current = transform.getLocalPosition()
-    transform.setLocalScale(new vec3(width, 1, BAR_HEIGHT_CM))
+    transform.setLocalScale(new vec3(width, 1, FILL_HEIGHT_CM))
     transform.setLocalPosition(new vec3(width / 2 - BAR_WIDTH_CM / 2, current.y, current.z))
+    const fillVisual = run.progressFill.getComponent('Component.RenderMeshVisual') as RenderMeshVisual
+    if (!isNull(fillVisual) && !isNull(fillVisual.mainMaterial)) {
+      fillVisual.mainMaterial.mainPass.baseColor = this.fadeColor(run.theme.accent)
+    }
   }
 
   /**
@@ -464,7 +490,100 @@ export class BenchClockController extends BaseScriptComponent {
   }
 
   private setBackplateColor(run: RunState, color: vec4): void {
-    run.backplate.mainPass.baseColor = color
+    run.backplate.mainPass.baseColor = this.fadeColor(color)
+  }
+
+  /**
+   * Scales each panel about its own origin and fades static materials (rim, track,
+   * NextUp plate) toward black. Driven colours are faded in the render path instead.
+   */
+  private prepareEntrance(): void {
+    const nextUpPanel = this.nextUpLabel.getSceneObject().getParent()
+    this.entrancePanels = [this.runAPanel, this.runBPanel, this.runCPanel, nextUpPanel]
+
+    this.entrancePanels.forEach((panel) => {
+      const isNextUp = panel === nextUpPanel
+      this.forEachChild(panel, (obj) => {
+        if (obj.name === 'ProgressFill') {
+          return
+        }
+        if (obj.name === 'Background' && !isNextUp) {
+          return
+        }
+        const visual = obj.getComponent('Component.RenderMeshVisual') as RenderMeshVisual
+        if (isNull(visual) || isNull(visual.mainMaterial)) {
+          return
+        }
+        const color = visual.mainMaterial.mainPass.baseColor
+        this.staticFade.push({
+          material: visual.mainMaterial,
+          rest: new vec4(color.x, color.y, color.z, color.w)
+        })
+      })
+    })
+  }
+
+  private tickEntrance(deltaTime: number): void {
+    if (this.entranceDone) {
+      return
+    }
+    this.entranceSeconds += deltaTime
+    const amount = this.entranceAmount()
+    this.applyEntranceVisuals(amount)
+    if (this.entranceSeconds >= ENTRANCE_DURATION) {
+      this.entranceDone = true
+      this.applyEntranceVisuals(1)
+    }
+  }
+
+  private entranceAmount(): number {
+    if (this.entranceDone) {
+      return 1
+    }
+    const t = Math.min(1, this.entranceSeconds / ENTRANCE_DURATION)
+    return 1 - (1 - t) * (1 - t) * (1 - t)
+  }
+
+  private fadeColor(color: vec4): vec4 {
+    const amount = this.entranceAmount()
+    if (amount >= 1) {
+      return color
+    }
+    return new vec4(color.x * amount, color.y * amount, color.z * amount, color.w)
+  }
+
+  private applyEntranceVisuals(amount: number): void {
+    const scale = ENTRANCE_SCALE_FROM + (1 - ENTRANCE_SCALE_FROM) * amount
+    this.entrancePanels.forEach((panel) => {
+      panel.getTransform().setLocalScale(new vec3(scale, scale, scale))
+    })
+    this.staticFade.forEach((entry) => {
+      entry.material.mainPass.baseColor = new vec4(
+        entry.rest.x * amount,
+        entry.rest.y * amount,
+        entry.rest.z * amount,
+        entry.rest.w
+      )
+    })
+  }
+
+  private blackoutDrivenVisuals(): void {
+    const black = new vec4(0, 0, 0, 1)
+    this.runs.forEach((run) => {
+      run.backplate.mainPass.baseColor = black
+      run.view.title.textFill.color = black
+      run.view.stepName.textFill.color = black
+      run.view.countdown.textFill.color = black
+    })
+    this.nextUpLabel.textFill.color = black
+    this.nextUpCountdown.textFill.color = black
+  }
+
+  private forEachChild(root: SceneObject, visit: (obj: SceneObject) => void): void {
+    visit(root)
+    for (let i = 0; i < root.getChildrenCount(); i++) {
+      this.forEachChild(root.getChild(i), visit)
+    }
   }
 
   private renderNextUp(): void {
@@ -482,10 +601,14 @@ export class BenchClockController extends BaseScriptComponent {
     if (soonest === null) {
       this.nextUpLabel.text = 'NEXT UP'
       this.nextUpCountdown.text = '--:--'
+      this.nextUpLabel.textFill.color = this.fadeColor(this.nextUpColor)
+      this.nextUpCountdown.textFill.color = this.fadeColor(this.nextUpColor)
       return
     }
     this.nextUpLabel.text = soonest.protocol.name
     this.nextUpCountdown.text = this.formatMinutesSeconds(soonest.remainingSeconds)
+    this.nextUpLabel.textFill.color = this.fadeColor(this.nextUpColor)
+    this.nextUpCountdown.textFill.color = this.fadeColor(this.nextUpColor)
   }
 
   /** Advances a run to its next step, doubling as the acknowledgement for a pulsing alert. */
