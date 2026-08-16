@@ -4,3 +4,10 @@ ls-extensions/
 Cache/
 *.lock
 Workspaces/
+.mcp.json
+.codex/
+.cursor/mcp.json
+ls-extensions/
+Cache/
+*.lock
+Workspaces/
